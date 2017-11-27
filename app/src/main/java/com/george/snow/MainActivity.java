@@ -51,6 +51,16 @@ public class MainActivity extends Activity {
             editor.apply();
         }
 
+        //Checking internet availability and if time is stored then push to firebase
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if(isConnected){
+            cronometerVariable.sendOnLine();
+        }
+
         frameLayout = (FrameLayout) findViewById(R.id.frameID);
 
         //We add some snow for effect in Layout

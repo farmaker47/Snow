@@ -8,6 +8,10 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by farmaker1 on 25/11/2017.
  */
@@ -120,7 +124,7 @@ public class Cronometer {
             //making the references
             mMessagesDatabaseReference = mFirebaseDatabase.getReference();
 
-            mMessagesDatabaseReference.child("Timecollected").push().setValue(timeToSend);
+            mMessagesDatabaseReference.child("Timecollected").push().setValue(getTheDateTime() +","+ timeToSend);
 
             //After sending the total time we set time to zero
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -133,5 +137,10 @@ public class Cronometer {
 
     }
 
+    private String getTheDateTime() {
+        DateFormat df = new SimpleDateFormat("d MMM");
+        String date = df.format(Calendar.getInstance().getTime());
+        return date;
+    }
 
 }
