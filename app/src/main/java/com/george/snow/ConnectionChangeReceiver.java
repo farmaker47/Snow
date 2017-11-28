@@ -28,6 +28,8 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
 
         //Getting instance of Cronometer class
         Cronometer cronometerVariable = new Cronometer(context);
+        MainActivity mainActivity = new MainActivity();
+        SecondActivity secondActivity = new SecondActivity();
 
         //Checking internet availability
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -45,9 +47,13 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
             editor.putLong(STOP_TIME,stopTime);
             editor.apply();
 
-            cronometerVariable.getStopTime();
+            //Check if app is in foreground
+            if(mainActivity.isActive==true || secondActivity.isActive==true){
+                cronometerVariable.getStopTime();
 
-            cronometerVariable.sendOnLine();
+                cronometerVariable.sendOnLine();
+            }
+
         }else{
             Toast.makeText(context, "NOT Active WiFi", Toast.LENGTH_LONG).show();
             long startTime = System.currentTimeMillis();

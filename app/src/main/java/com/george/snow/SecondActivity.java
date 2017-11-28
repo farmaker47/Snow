@@ -16,6 +16,8 @@ public class SecondActivity extends AppCompatActivity {
     private static final String START_TIME = "start_time";
     private static final String STOP_TIME = "stop_time";
 
+    static boolean isActive = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,9 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //set true if app is running
+        isActive=true;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -58,6 +63,9 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        //set true if app is running
+        isActive=false;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();

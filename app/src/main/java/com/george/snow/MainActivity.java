@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -21,10 +20,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +32,8 @@ public class MainActivity extends Activity {
     private static final String START_TIME = "start_time";
     private static final String STOP_TIME = "stop_time";
     private Cronometer cronometerVariable = new Cronometer(this);
+
+    static boolean isActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +81,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-
+        Log.e("MainStop", "MainStop");
     }
 
     //We use this method to set start time in onResume
     @Override
     protected void onResume() {
         super.onResume();
+
+        //set true if app is running
+        isActive=true;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -120,6 +121,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        //set true if app is running
+        isActive=false;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
