@@ -122,7 +122,7 @@ public class Cronometer {
             //making the references
             mMessagesDatabaseReference = mFirebaseDatabase.getReference();
 
-            mMessagesDatabaseReference.child("Timecollected").push().setValue(getTheDateTime() +","+ timeToSend);
+            mMessagesDatabaseReference.child("Timecollected").push().setValue(getTheDateTime() +","+timeToSend+","+ getDeviceInfo());
 
             //After sending the total time we set time to zero
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -139,6 +139,10 @@ public class Cronometer {
         DateFormat df = new SimpleDateFormat("d MMM");
         String date = df.format(Calendar.getInstance().getTime());
         return date;
+    }
+
+    private String getDeviceInfo(){
+        return android.os.Build.DEVICE + "-" +android.os.Build.MODEL;
     }
 
 }
