@@ -106,6 +106,8 @@ public class MainActivity extends Activity {
             editor.apply();
 
             cronometerVariable.setStartTime();
+        }else{
+            cronometerVariable.sendOnLine();
         }
     }
 

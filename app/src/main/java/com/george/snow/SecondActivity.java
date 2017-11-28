@@ -51,6 +51,8 @@ public class SecondActivity extends AppCompatActivity {
             editor.apply();
 
             cronometerVariable.setStartTime();
+        }else{
+            cronometerVariable.sendOnLine();
         }
     }
 
