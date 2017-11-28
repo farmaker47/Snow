@@ -32,7 +32,6 @@ public class Cronometer {
 
     public Cronometer(Context context) {
         this.context = context;
-
     }
 
     public void getStopTime() {
@@ -80,7 +79,6 @@ public class Cronometer {
     //Method to check what time it is already written in SharedPreferences
     public void checkTime(Long lon) {
 
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         boolean contains = sharedPreferences.contains(TIME_ADDED);
         long checkedLong = sharedPreferences.getLong(TIME_ADDED, 0);
@@ -97,7 +95,7 @@ public class Cronometer {
         }
 
         String incomi = Long.toString(sharedPreferences.getLong(TIME_ADDED, 0));
-        Log.e("TimeAdded", incomi);
+        Log.e("TimeTotal", incomi);
     }
 
     //Method to send total time onine to Firebase Database
