@@ -27,6 +27,7 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        isActive=false;
 
     }
 
@@ -44,13 +45,10 @@ public class SecondActivity extends AppCompatActivity {
 
         if(!isConnected){
             long startTime = System.currentTimeMillis();
-
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putLong(START_TIME,startTime);
             editor.apply();
-
-            cronometerVariable.setStartTime();
         }else{
             cronometerVariable.sendOnLine();
         }

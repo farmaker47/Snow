@@ -8,11 +8,16 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.hardware.display.DisplayManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -43,9 +48,9 @@ public class MainActivity extends Activity {
         //First time the app starts we check if there is added time
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean contains = sharedPreferences.contains(TIME_ADDED);
-        if(!contains){
+        if (!contains) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putLong(TIME_ADDED,0);
+            editor.putLong(TIME_ADDED, 0);
             editor.apply();
         }
 
@@ -55,7 +60,7 @@ public class MainActivity extends Activity {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        if(isConnected){
+        if (isConnected) {
             cronometerVariable.sendOnLine();
         }
 
@@ -69,7 +74,7 @@ public class MainActivity extends Activity {
         snowFallView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                 startActivity(intent);
             }
         });
@@ -77,11 +82,11 @@ public class MainActivity extends Activity {
     }
 
 
-
     @Override
     protected void onStop() {
         super.onStop();
         Log.e("MainStop", "MainStop");
+        isActive = false;
     }
 
     //We use this method to set start time in onResume
@@ -90,34 +95,34 @@ public class MainActivity extends Activity {
         super.onResume();
 
         //set true if app is running
-        isActive=true;
+        isActive = true;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        if(!isConnected){
+        if (!isConnected) {
             long startTime = System.currentTimeMillis();
-
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putLong(START_TIME,startTime);
+            editor.putLong(START_TIME, startTime);
             editor.apply();
 
-            cronometerVariable.setStartTime();
-        }else{
+            /*Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds
+            v.vibrate(1000);*/
+        } else if (isConnected) {
             cronometerVariable.sendOnLine();
         }
     }
 
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
-            }
+    }
+
 
     //We use this method to set stop time in onPause method because onStop doesnt get called when we go to second activity and back
     @Override
@@ -125,19 +130,19 @@ public class MainActivity extends Activity {
         super.onPause();
         Log.e("MainPause", "MainPause");
         //set true if app is running
-        isActive=false;
+        isActive = false;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        if(!isConnected){
+        if (!isConnected) {
             long stopTime = System.currentTimeMillis();
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putLong(STOP_TIME,stopTime);
+            editor.putLong(STOP_TIME, stopTime);
             editor.apply();
 
             cronometerVariable.getStopTime();
@@ -330,6 +335,23 @@ public class MainActivity extends Activity {
             if (mProxy != null) {
                 mProxy.setColorFilter(colorFilter);
             }
+        }
+    }
+
+    public boolean isScreenOn() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+            DisplayManager dm = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+            boolean screenOn = false;
+            for (Display display : dm.getDisplays()) {
+                if (display.getState() != Display.STATE_OFF) {
+                    screenOn = true;
+                }
+            }
+            return screenOn;
+        } else {
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            //noinspection deprecation
+            return pm.isScreenOn();
         }
     }
 }
