@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putLong(TIME_ADDED, 0);
+            //also put a start time to avoid see cases with 45.000 hours at the beginning
             editor.putLong(START_TIME, startTime);
             editor.apply();
         }
@@ -62,10 +63,6 @@ public class MainActivity extends Activity {
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-
-        if (isConnected) {
-            cronometerVariable.sendOnLine();
-        }
 
         frameLayout = (FrameLayout) findViewById(R.id.frameID);
 

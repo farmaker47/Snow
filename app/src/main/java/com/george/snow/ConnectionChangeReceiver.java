@@ -53,7 +53,7 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
             //Check if app is in foreground
             if (mainActivity.isActive == true || secondActivity.isActive == true) {
 
-                //Using SharedPreferences to save stop/start time
+                //Using SharedPreferences to save stop time
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putLong(STOP_TIME, stopTime);
