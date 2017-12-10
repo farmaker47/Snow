@@ -24,7 +24,8 @@
 
         <receiver
             android:name=".ConnectionChangeReceiver"
-            android:label="NetworkConnection">
+            android:label="NetworkConnection"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
