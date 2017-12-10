@@ -48,8 +48,12 @@ public class MainActivity extends Activity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean contains = sharedPreferences.contains(TIME_ADDED);
         if (!contains) {
+
+            long startTime = System.currentTimeMillis();
+
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putLong(TIME_ADDED, 0);
+            editor.putLong(START_TIME, startTime);
             editor.apply();
         }
 

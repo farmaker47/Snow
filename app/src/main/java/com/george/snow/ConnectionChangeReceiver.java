@@ -43,35 +43,31 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        /*PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = pm.isScreenOn();*/
-
         if (isConnected) {
-            Toast.makeText(context, "Active WiFi", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Active WiFi", Toast.LENGTH_SHORT).show();
             long stopTime = System.currentTimeMillis();
-            long startTime = System.currentTimeMillis();
 
-            //Using SharedPreferences to save stop/start time
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            //Setting also start time in order to catch a bug where time was calculated if user closed screen when app was running
-            editor.putLong(START_TIME, startTime);
-            editor.putLong(STOP_TIME, stopTime);
-            editor.apply();
-
-
+            if (isScreenOn(context) == false) {
+                return;
+            }
             //Check if app is in foreground
             if (mainActivity.isActive == true || secondActivity.isActive == true) {
+
+                //Using SharedPreferences to save stop/start time
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putLong(STOP_TIME, stopTime);
+                editor.apply();
+
                 cronometerVariable.getStopTime();
 
                 cronometerVariable.sendOnLine();
             }
-
         } else {
-            Toast.makeText(context, "NOT Active WiFi", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "NOT Active WiFi", Toast.LENGTH_SHORT).show();
             long startTime = System.currentTimeMillis();
-            //Using SharedPreferences to save start time
 
+            //Check if screen is off or in DOZE mode
             if (isScreenOn(context) == false) {
                 return;
             }

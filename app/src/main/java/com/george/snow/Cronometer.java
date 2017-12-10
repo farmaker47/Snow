@@ -113,8 +113,6 @@ public class Cronometer {
             int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
 
             String timeToSend = String.valueOf(hours) + ":" + String.valueOf(minutes) + ":" + String.valueOf(seconds);
-            Log.e("timeToFirebase", timeToSend);
-
 
             //Instantiating the database..access point of the database reference
             mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -128,6 +126,8 @@ public class Cronometer {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putLong(TIME_ADDED, 0);
             editor.apply();
+
+            Log.e("timeToFirebase", timeToSend);
 
         } else {
             return;
