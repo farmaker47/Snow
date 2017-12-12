@@ -1,9 +1,11 @@
 package com.george.snow;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +19,9 @@ public class SecondActivity extends AppCompatActivity {
     private static final String STOP_TIME = "stop_time";
 
     static boolean isActive = false;
+
+    private ConnectionChangeReceiver mConnectionChangeReceiver;
+    private IntentFilter mIntentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,12 @@ public class SecondActivity extends AppCompatActivity {
             editor.putLong(START_TIME,startTime);
             editor.apply();
         }else{
+            long startTime = System.currentTimeMillis();
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putLong(START_TIME,startTime);
+            editor.apply();
+
             cronometerVariable.sendOnLine();
         }
     }

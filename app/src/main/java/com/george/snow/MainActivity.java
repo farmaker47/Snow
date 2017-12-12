@@ -3,6 +3,7 @@ package com.george.snow;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -13,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -113,8 +115,15 @@ public class MainActivity extends Activity {
             // Vibrate for 500 milliseconds
             v.vibrate(1000);*/
         } else {
+            long startTime = System.currentTimeMillis();
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putLong(START_TIME, startTime);
+            editor.apply();
+
             cronometerVariable.sendOnLine();
         }
+
     }
 
 

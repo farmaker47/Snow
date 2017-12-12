@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
 
-        if (isConnected) {
+        if (isConnected && intent.getAction()!= null && intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
             Toast.makeText(context, "Active WiFi", Toast.LENGTH_SHORT).show();
             long stopTime = System.currentTimeMillis();
 
@@ -62,8 +63,9 @@ public class ConnectionChangeReceiver extends BroadcastReceiver {
                 cronometerVariable.getStopTime();
 
                 cronometerVariable.sendOnLine();
+                Log.e("Receiver", "sendOnLine");
             }
-        } else {
+        } else if (!isConnected){
             Toast.makeText(context, "NOT Active WiFi", Toast.LENGTH_SHORT).show();
             long startTime = System.currentTimeMillis();
 
